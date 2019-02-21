@@ -289,7 +289,7 @@ Eigen::MatrixXd NPAM::Infill_Path(Eigen::MatrixXd fillpts, bool FlipTravel, doub
 	long int storeset_idx = 0;
 	for (long int i=0;i<allpts.rows()-1;++i)
 	{
-		if (std::abs(allpts(i,dir1)-allpts(i+1,dir1))<0.00001)
+		if (std::fabs(allpts(i,dir1)-allpts(i+1,dir1))<0.0001)
 		{
 			storeset.block(storeset_idx,0,1,allpts.cols()) = allpts.block(i,0,1,allpts.cols());
 			++storeset_idx;
@@ -341,9 +341,9 @@ Eigen::MatrixXd NPAM::Infill_Path(Eigen::MatrixXd fillpts, bool FlipTravel, doub
 
 	// storing every n'th point to smoothen out the path 
 	int count = 0;
-	Eigen::MatrixXd store_spaced_pt(storesort0x1.rows(),storesort0x1.cols()); 
+    Eigen::MatrixXd store_spaced_pt = Eigen::MatrixXd::Constant(storesort0x1.rows(),storesort0x1.cols(),0); 
 	store_spaced_pt.block(0,0,1,storesort0x1.cols()) = storesort0x1.block(0,0,1,storesort0x1.cols());
-	long int store_spaced_pt_idx = 1;
+	long int store_spaced_pt_idx = 0;
 	int flagg = 0;
 	for (long int i=1;i<storesort0x1.rows()-1;++i)
 	{
@@ -357,17 +357,17 @@ Eigen::MatrixXd NPAM::Infill_Path(Eigen::MatrixXd fillpts, bool FlipTravel, doub
 			++count;
 			if (double(count)/space == round(count/space))
 			{
-				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				++store_spaced_pt_idx;
+				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				count = 0;
 			}
 		}
 		else
 		{
+			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i+1,0,1,storesort0x1.cols());
-			++store_spaced_pt_idx;
 			flagg = 1;	
 		}
 	}
@@ -412,7 +412,7 @@ Eigen::MatrixXd NPAM::Infill_Path_with_Normals(Eigen::MatrixXd fillpts, bool Fli
 	long int storeset_idx = 0;
 	for (long int i=0;i<allpts.rows()-1;++i)
 	{
-		if (std::abs(allpts(i,dir1)-allpts(i+1,dir1))<0.00001)
+		if (std::fabs(allpts(i,dir1)-allpts(i+1,dir1))<0.0001)
 		{
 			storeset.block(storeset_idx,0,1,allpts.cols()) = allpts.block(i,0,1,allpts.cols());
 			++storeset_idx;
@@ -461,9 +461,9 @@ Eigen::MatrixXd NPAM::Infill_Path_with_Normals(Eigen::MatrixXd fillpts, bool Fli
 	
 	// storing every n'th point to smoothen out the path 
 	int count = 0;
-	Eigen::MatrixXd store_spaced_pt(storesort0x1.rows(),storesort0x1.cols()); 
+    Eigen::MatrixXd store_spaced_pt = Eigen::MatrixXd::Constant(storesort0x1.rows(),storesort0x1.cols(),0); 
 	store_spaced_pt.block(0,0,1,storesort0x1.cols()) = storesort0x1.block(0,0,1,storesort0x1.cols());
-	long int store_spaced_pt_idx = 1;
+	long int store_spaced_pt_idx = 0;
 	int flagg = 0;
 	for (long int i=1;i<storesort0x1.rows()-1;++i)
 	{
@@ -477,17 +477,17 @@ Eigen::MatrixXd NPAM::Infill_Path_with_Normals(Eigen::MatrixXd fillpts, bool Fli
 			++count;
 			if (double(count)/space == round(count/space))
 			{
-				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				++store_spaced_pt_idx;
+				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				count = 0;
 			}
 		}
 		else
 		{
+			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i+1,0,1,storesort0x1.cols());
-			++store_spaced_pt_idx;
 			flagg = 1;	
 		}
 	}
@@ -532,7 +532,7 @@ Eigen::MatrixXd NPAM::Infill_Path_with_bxbybz(Eigen::MatrixXd fillpts, bool Flip
 	long int storeset_idx = 0;
 	for (long int i=0;i<allpts.rows()-1;++i)
 	{
-		if (std::abs(allpts(i,dir1)-allpts(i+1,dir1))<0.00001)
+		if (std::fabs(allpts(i,dir1)-allpts(i+1,dir1))<0.0001)
 		{
 			storeset.block(storeset_idx,0,1,allpts.cols()) = allpts.block(i,0,1,allpts.cols());
 			++storeset_idx;
@@ -582,9 +582,9 @@ Eigen::MatrixXd NPAM::Infill_Path_with_bxbybz(Eigen::MatrixXd fillpts, bool Flip
 	
 	// storing every n'th point to smoothen out the path 
 	int count = 0;
-	Eigen::MatrixXd store_spaced_pt(storesort0x1.rows(),storesort0x1.cols()); 
+    Eigen::MatrixXd store_spaced_pt = Eigen::MatrixXd::Constant(storesort0x1.rows(),storesort0x1.cols(),0); 
 	store_spaced_pt.block(0,0,1,storesort0x1.cols()) = storesort0x1.block(0,0,1,storesort0x1.cols());
-	long int store_spaced_pt_idx = 1;
+	long int store_spaced_pt_idx = 0;
 	int flagg = 0;
 	for (long int i=1;i<storesort0x1.rows()-1;++i)
 	{
@@ -598,17 +598,17 @@ Eigen::MatrixXd NPAM::Infill_Path_with_bxbybz(Eigen::MatrixXd fillpts, bool Flip
 			++count;
 			if (double(count)/space == round(count/space))
 			{
-				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				++store_spaced_pt_idx;
+				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				count = 0;
 			}
 		}
 		else
 		{
+			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i+1,0,1,storesort0x1.cols());
-			++store_spaced_pt_idx;
 			flagg = 1;	
 		}
 	}
@@ -653,7 +653,7 @@ Eigen::MatrixXd NPAM::Infill_Path_with_euler(Eigen::MatrixXd fillpts, bool FlipT
 	long int storeset_idx = 0;
 	for (long int i=0;i<allpts.rows()-1;++i)
 	{
-		if (std::abs(allpts(i,dir1)-allpts(i+1,dir1))<0.00001)
+		if (std::fabs(allpts(i,dir1)-allpts(i+1,dir1))<0.0001)
 		{
 			storeset.block(storeset_idx,0,1,allpts.cols()) = allpts.block(i,0,1,allpts.cols());
 			++storeset_idx;
@@ -704,9 +704,9 @@ Eigen::MatrixXd NPAM::Infill_Path_with_euler(Eigen::MatrixXd fillpts, bool FlipT
 	
 	// storing every n'th point to smoothen out the path 
 	int count = 0;
-	Eigen::MatrixXd store_spaced_pt(storesort0x1.rows(),storesort0x1.cols()); 
+    Eigen::MatrixXd store_spaced_pt = Eigen::MatrixXd::Constant(storesort0x1.rows(),storesort0x1.cols(),0); 
 	store_spaced_pt.block(0,0,1,storesort0x1.cols()) = storesort0x1.block(0,0,1,storesort0x1.cols());
-	long int store_spaced_pt_idx = 1;
+	long int store_spaced_pt_idx = 0;
 	int flagg = 0;
 	for (long int i=1;i<storesort0x1.rows()-1;++i)
 	{
@@ -720,17 +720,17 @@ Eigen::MatrixXd NPAM::Infill_Path_with_euler(Eigen::MatrixXd fillpts, bool FlipT
 			++count;
 			if (double(count)/space == round(count/space))
 			{
-				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				++store_spaced_pt_idx;
+				store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 				count = 0;
 			}
 		}
 		else
 		{
+			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i,0,1,storesort0x1.cols());
 			++store_spaced_pt_idx;
 			store_spaced_pt.block(store_spaced_pt_idx,0,1,storesort0x1.cols()) = storesort0x1.block(i+1,0,1,storesort0x1.cols());
-			++store_spaced_pt_idx;
 			flagg = 1;	
 		}
 	}

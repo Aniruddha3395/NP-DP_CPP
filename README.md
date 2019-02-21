@@ -1,6 +1,6 @@
 #NON-PLANAR 3D PRINTING TOOLPATH GENERATION
 
-#LIBRARIES REQUIRED:
+#lIBRARIES REQUIRED:
 1. Eigen (http://eigen.tuxfamily.org/index.php?title=Main_Page)
 2. Libigl (https://github.com/libigl/libigl)				# for reading STL file
 3. gnuplot-iostream(https://github.com/dstahlke/gnuplot-iostream)	# (optional) for visualization data
