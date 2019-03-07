@@ -34,25 +34,27 @@
 
 ### INSTALLATION INSTRUCTIONS FOR GNUPLOT-IOSTREAM AND DEPENDANCIES:
 
-1. download zip or clone git directory (https://github.com/dstahlke/gnuplot-iostream)
+1. download zip or clone git directory ([Link](https://github.com/dstahlke/gnuplot-iostream))
 2. include the directory in CMakeLists and header in main_file.cpp
 3. certain dependancies required:
-	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_iostreams.a)]
-	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_system.a)]
-	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_filesystem.a)]
-	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libutil.a)]
-
+```
+[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_iostreams.a)]
+[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_system.a)]
+[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_filesystem.a)]
+[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libutil.a)]
+```
 ### RUNNING MAIN FILE:
 
 1. add stl file in the data/
 2. specify appropriate parameters in main_file.cpp
 3. to generate the .out file-
    in the main directory-
-	mkdir build
-	cd build/
-	cmake ..
-	make -j
-	./OUTFile
-
+```
+mkdir build
+cd build/
+cmake ..
+make -j
+./OUTFile
+```
 
  
