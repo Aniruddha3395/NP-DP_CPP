@@ -1,11 +1,11 @@
-#NON-PLANAR 3D PRINTING TOOLPATH GENERATION
+# NON-PLANAR 3D PRINTING TOOLPATH GENERATION
 
-#lIBRARIES REQUIRED:
+### lIBRARIES REQUIRED:
 1. Eigen (http://eigen.tuxfamily.org/index.php?title=Main_Page)
 2. Libigl (https://github.com/libigl/libigl)				# for reading STL file
 3. gnuplot-iostream(https://github.com/dstahlke/gnuplot-iostream)	# (optional) for visualization data
 
-#INSTALLATION INSTRUCTIONS FOR LIBIGL AND DEPENDANCIES:
+### INSTALLATION INSTRUCTIONS FOR LIBIGL AND DEPENDANCIES:
 
 1. download zip or clone git directory (https://github.com/libigl/libigl)
 2. install all the dependancies listed 
@@ -28,7 +28,7 @@
 3. NOTE : If only header files are added in the /usr/local/include/igl folder, then add all the cpp and extra support files from cloned libigl source directory (copy all files from ${SOURCE_DIR}/include/igl/ )
 4. To avoid issue of 'pythread', add [target_link_libraries(${EXECUTABLE_FILE} pthread) to cmake]
 
-#INSTALLATION INSTRUCTIONS FOR GNUPLOT-IOSTREAM AND DEPENDANCIES:
+### INSTALLATION INSTRUCTIONS FOR GNUPLOT-IOSTREAM AND DEPENDANCIES:
 
 1. download zip or clone git directory (https://github.com/dstahlke/gnuplot-iostream)
 2. include the directory in CMakeLists and header in main_file.cpp
@@ -38,7 +38,7 @@
 	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_filesystem.a)]
 	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libutil.a)]
 
-#RUNNING MAIN FILE:
+### RUNNING MAIN FILE:
 
 1. add stl file in the data/
 2. specify appropriate parameters in main_file.cpp
