@@ -38,10 +38,10 @@
 2. include the directory in CMakeLists and header in main_file.cpp
 3. certain dependancies required:
 ```
-[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_iostreams.a)]
-[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_system.a)]
-[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_filesystem.a)]
-[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libutil.a)]
+target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_iostreams.a)
+target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_system.a)
+target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_filesystem.a)
+target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libutil.a)
 ```
 ### RUNNING MAIN FILE:
 
