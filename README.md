@@ -7,7 +7,7 @@
 
 ### INSTALLATION INSTRUCTIONS FOR LIBIGL AND DEPENDANCIES:
 
-1. download zip or clone git directory (https://github.com/libigl/libigl)
+1. download zip or clone git directory ([Link](https://github.com/libigl/libigl))
 2. install all the dependancies listed 
 
 ```
@@ -24,13 +24,20 @@
  sudo apt-get install libxcursor-dev
 ```
 
-2. build steps :-	mkdir build
-			cd build/
-			cmake ..
-			make -j 
-			sudo make install
-3. NOTE : If only header files are added in the /usr/local/include/igl folder, then add all the cpp and extra support files from cloned libigl source directory (copy all files from ${SOURCE_DIR}/include/igl/ )
-4. To avoid issue of 'pythread', add [target_link_libraries(${EXECUTABLE_FILE} pthread) to cmake]
+2. build steps :-	
+```
+mkdir build
+cd build/
+cmake ..
+make -j 
+sudo make install
+```
+3. NOTE : If only header files are added in the /usr/local/include/igl folder, then add all the cpp and extra support files from cloned libigl source directory (copy all files from ``` ${SOURCE_DIR}/include/igl/ ```)
+4. To avoid issue of 'pythread', add 
+```
+target_link_libraries(${EXECUTABLE_FILE} pthread) 
+```
+to cmake
 
 ### INSTALLATION INSTRUCTIONS FOR GNUPLOT-IOSTREAM AND DEPENDANCIES:
 
