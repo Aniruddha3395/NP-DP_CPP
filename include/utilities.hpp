@@ -1,5 +1,5 @@
-#ifndef UTILITIES
-#define UTILITIES
+#ifndef UTILITIES_HPP
+#define UTILITIES_HPP
 
 #include <Eigen/Dense>
 #include <vector>
@@ -61,15 +61,23 @@ public:
 	static Eigen::VectorXd linsp(double, double, double);
 
 	// inpolygon function to check if point/s is/are inside polygon 
-	static std::vector<int> InPoly(Eigen::MatrixXd, Eigen::MatrixXd);
+	static Eigen::MatrixXd InPoly(Eigen::MatrixXd, Eigen::MatrixXd);
+	static bool lines_intersect(double l1[2][2], double l2[2][2]);
 
 	// find the index of non-zero elements
 	static std::vector<int> find_idx(Eigen::VectorXi);
 	static std::vector<int> find_idx(Eigen::VectorXf);
 	static std::vector<int> find_idx(Eigen::VectorXd);
+	static std::vector<int> find_idx(Eigen::MatrixXd);
 	static std::vector<int> find_idx(std::vector<int>);
 	static std::vector<int> find_idx(std::vector<float>);
 	static std::vector<int> find_idx(std::vector<double>);
+
+	// get the norm of vector or 1-d matrix
+	static double vec_norm(Eigen::MatrixXd);
+	static double vec_norm(std::vector<double>);
+	static double vec_norm(std::vector<int>);
+
 };
 
 #endif

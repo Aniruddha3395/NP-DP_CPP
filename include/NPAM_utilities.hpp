@@ -1,5 +1,5 @@
-#ifndef NPAM_UTILITIES
-#define NPAM_UTILITIES
+#ifndef NPAM_UTILITIES_HPP
+#define NPAM_UTILITIES_HPP
 
 #include <Eigen/Dense>
 #include <vector>

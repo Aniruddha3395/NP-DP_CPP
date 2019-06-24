@@ -10,9 +10,9 @@ project(${EXEC})
 #include
 include_directories(/usr/local/include/eigen3)
 include_directories(/usr/local/include)
-include_directories(/home/aniruddha/Desktop/Non_Planar_3D_Printing/CPP/include)
-include_directories(/home/aniruddha/Desktop/Non_Planar_3D_Printing/CPP/data)
-include_directories(/home/aniruddha/gnuplot-iostream-master)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/data)
+include_directories(${PROJECT_SOURCE_DIR}/gnuplot-iostream-master)
 
 
 #link

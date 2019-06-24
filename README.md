@@ -35,7 +35,7 @@ sudo make install
 4. NOTE : If only header files are added in the /usr/local/include/igl folder, then add all the cpp and extra support files from cloned libigl source directory (copy all files from ``` ${SOURCE_DIR}/include/igl/ ```)
 5. To avoid issue of 'pythread', add ``` target_link_libraries(${EXECUTABLE_FILE} pthread)``` to cmake
 
-### INSTALLATION INSTRUCTIONS FOR GNUPLOT-IOSTREAM AND DEPENDANCIES:
+### INSTALLATION INSTRUCTIONS FOR GNUPLOT-IOSTREAM AND DEPENDANCIES: (NEW COMMIT ADDED GNUPLOT-IOSTREAM in the DIR)
 
 1. download zip or clone git directory ([Link](https://github.com/dstahlke/gnuplot-iostream))
 2. include the directory in CMakeLists and header in main_file.cpp

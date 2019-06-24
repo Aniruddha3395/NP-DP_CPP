@@ -54,6 +54,71 @@ Eigen::MatrixXd rtf::apply_transformation(Eigen::MatrixXd data, Eigen::Matrix4d 
     return transformed_data_mat.transpose();
 }
 
+///////////////////////////////////////////////////////////
+
+Eigen::MatrixXd rtf::apply_transformation(Eigen::MatrixXd data, Eigen::MatrixXd T_mat)
+{
+    //NOTE: Homogeneous Tranformation Matrix (4x4)
+
+    // putting data in [x, y, z, 1]' format
+    Eigen::MatrixXd data_with_fourth_row(data.cols()+1,data.rows());
+    Eigen::VectorXd ones_vec = Eigen::VectorXd::Constant(data.rows(),1);
+    data_with_fourth_row.block(0,0,data.cols(),data.rows()) = data.transpose();
+    data_with_fourth_row.block(data.cols(),0,1,data.rows()) = ones_vec.transpose();
+    Eigen::MatrixXd transformed_data = T_mat*data_with_fourth_row;
+    Eigen::MatrixXd transformed_data_mat(transformed_data.rows()-1,transformed_data.cols());
+    transformed_data_mat = transformed_data.block(0,0,transformed_data.rows()-1,transformed_data.cols());
+    return transformed_data_mat.transpose();
+}
+
+///////////////////////////////////////////////////////////
+
+Eigen::MatrixXd rtf::apply_transformation_to_waypoints(Eigen::MatrixXd xyz_bxbybz, Eigen::Matrix4d T_mat)
+{
+    //NOTE: Homogeneous Tranformation Matrix (4x4)
+
+    // apply transformation on position coordinates
+    Eigen::MatrixXd xyz_T = rtf::apply_transformation(xyz_bxbybz.block(0,0,xyz_bxbybz.rows(),3),T_mat);
+
+    // apply transformation on orientation vectors
+    Eigen::Matrix4d T_mat_n = Eigen::Matrix4d::Identity();
+    T_mat_n.block(0,0,3,3) = T_mat.block(0,0,3,3);
+	Eigen::MatrixXd bx_n = rtf::apply_transformation(xyz_bxbybz.block(0,3,xyz_bxbybz.rows(),3),T_mat_n);
+	Eigen::MatrixXd by_n = rtf::apply_transformation(xyz_bxbybz.block(0,6,xyz_bxbybz.rows(),3),T_mat_n);
+	Eigen::MatrixXd bz_n = rtf::apply_transformation(xyz_bxbybz.block(0,9,xyz_bxbybz.rows(),3),T_mat_n);
+	Eigen::MatrixXd xyz_bxbybz_T(xyz_bxbybz.rows(),xyz_bxbybz.cols());
+	xyz_bxbybz_T.block(0,0,xyz_bxbybz_T.rows(),3) = xyz_T;
+	xyz_bxbybz_T.block(0,3,xyz_bxbybz_T.rows(),3) = bx_n;
+	xyz_bxbybz_T.block(0,6,xyz_bxbybz_T.rows(),3) = by_n;
+	xyz_bxbybz_T.block(0,9,xyz_bxbybz_T.rows(),3) = bz_n;
+
+    return xyz_bxbybz_T;
+}
+
+///////////////////////////////////////////////////////////
+
+Eigen::MatrixXd rtf::apply_transformation_to_waypoints(Eigen::MatrixXd xyz_bxbybz, Eigen::MatrixXd T_mat)
+{
+    //NOTE: Homogeneous Tranformation Matrix (4x4)
+
+    // apply transformation on position coordinates
+    Eigen::MatrixXd xyz_T = rtf::apply_transformation(xyz_bxbybz.block(0,0,xyz_bxbybz.rows(),3),T_mat);
+
+    // apply transformation on orientation vectors
+    Eigen::MatrixXd T_mat_n = Eigen::MatrixXd::Identity(4,4);
+    T_mat_n.block(0,0,3,3) = T_mat.block(0,0,3,3);
+	Eigen::MatrixXd bx_n = rtf::apply_transformation(xyz_bxbybz.block(0,3,xyz_bxbybz.rows(),3),T_mat_n);
+	Eigen::MatrixXd by_n = rtf::apply_transformation(xyz_bxbybz.block(0,6,xyz_bxbybz.rows(),3),T_mat_n);
+	Eigen::MatrixXd bz_n = rtf::apply_transformation(xyz_bxbybz.block(0,9,xyz_bxbybz.rows(),3),T_mat_n);
+	Eigen::MatrixXd xyz_bxbybz_T(xyz_bxbybz.rows(),xyz_bxbybz.cols());
+	xyz_bxbybz_T.block(0,0,xyz_bxbybz_T.rows(),3) = xyz_T;
+	xyz_bxbybz_T.block(0,3,xyz_bxbybz_T.rows(),3) = bx_n;
+	xyz_bxbybz_T.block(0,6,xyz_bxbybz_T.rows(),3) = by_n;
+	xyz_bxbybz_T.block(0,9,xyz_bxbybz_T.rows(),3) = bz_n;
+
+    return xyz_bxbybz_T;
+}
+
 ////////////////////////////////////////////////////////////
 
 std::string rtf::validate_seq(std::string seq)
@@ -61,12 +126,12 @@ std::string rtf::validate_seq(std::string seq)
 	if(seq =="")
 		seq = "ZYX";	
 	bool invalid_flag = false;
-	if(seq.size()>0 && seq.size()<3)
+	if(seq.size()!=3)
 	{
 		invalid_flag = true;
 	}
 	for (int i =0;i<3;++i)
-		if(seq[i]!='X' && seq[i]!='Y' && seq[i]!='Z')
+		if(seq[i]!='X' && seq[i]!='Y' && seq[i]!='Z' && seq[i]!='x' && seq[i]!='y' && seq[i]!='z')
 		{
 			invalid_flag = true; 
 			break;
@@ -87,11 +152,11 @@ Eigen::Matrix3d rtf::eul2rot(Eigen::MatrixXd eul_angles, std::string seq)
 	Eigen::Matrix3d rot_mat = Eigen::Matrix3d::Identity();
 	for (int i=0; i<3; ++i)
 	{
-		if(seq[i]=='X')
+		if(seq[i]=='X' || seq[i]=='x')
 			rot_mat = rot_mat * Eigen::AngleAxisd(eul_angles(0,i), Eigen::Vector3d::UnitX());
-		else if(seq[i]=='Y')
+		else if(seq[i]=='Y' || seq[i]=='y')
 			rot_mat = rot_mat * Eigen::AngleAxisd(eul_angles(0,i), Eigen::Vector3d::UnitY());			
-		else if(seq[i]=='Z')
+		else if(seq[i]=='Z' || seq[i]=='z')
 			rot_mat = rot_mat * Eigen::AngleAxisd(eul_angles(0,i), Eigen::Vector3d::UnitZ());					
 	}
 	return rot_mat; 
@@ -105,11 +170,11 @@ Eigen::MatrixXd rtf::rot2eul(Eigen::Matrix3d rot_mat, std::string seq)
 	int rot_idx[3];
 	for (int i=0; i<3; ++i)
 	{
-		if(seq[i]=='X')
+		if(seq[i]=='X' || seq[i]=='x')
 			rot_idx[i] = 0;
-		else if(seq[i]=='Y')
+		else if(seq[i]=='Y' || seq[i]=='y')
 			rot_idx[i] = 1;
-		else if(seq[i]=='Z')
+		else if(seq[i]=='Z' || seq[i]=='z')
 			rot_idx[i] = 2;
 	}	
 	Eigen::MatrixXd eul_angles(1,3);
@@ -154,11 +219,11 @@ Eigen::MatrixXd rtf::eul2qt(Eigen::MatrixXd eul_angles,std::string seq)
 	Eigen::Matrix3d rot_mat = Eigen::Matrix3d::Identity();
 	for (int i=0; i<3; ++i)
 	{
-		if(seq[i]=='X')
+		if(seq[i]=='X' || seq[i]=='x')
 			rot_mat = rot_mat * Eigen::AngleAxisd(eul_angles(0,i), Eigen::Vector3d::UnitX());
-		else if(seq[i]=='Y')
+		else if(seq[i]=='Y' || seq[i]=='y')
 			rot_mat = rot_mat * Eigen::AngleAxisd(eul_angles(0,i), Eigen::Vector3d::UnitY());			
-		else if(seq[i]=='Z')
+		else if(seq[i]=='Z' || seq[i]=='z')
 			rot_mat = rot_mat * Eigen::AngleAxisd(eul_angles(0,i), Eigen::Vector3d::UnitZ());					
 	}
 	Eigen::MatrixXd quat(1,4);
@@ -179,11 +244,11 @@ Eigen::MatrixXd rtf::qt2eul(Eigen::MatrixXd quat, std::string seq)
 	int rot_idx[3];
 	for (int i=0; i<3; ++i)
 	{
-		if(seq[i]=='X')
+		if(seq[i]=='X' || seq[i]=='x')
 			rot_idx[i] = 0;
-		else if(seq[i]=='Y')
+		else if(seq[i]=='Y' || seq[i]=='y')
 			rot_idx[i] = 1;
-		else if(seq[i]=='Z')
+		else if(seq[i]=='Z' || seq[i]=='z')
 			rot_idx[i] = 2;
 	}	
 	Eigen::MatrixXd eul_angles(1,3);
@@ -370,3 +435,40 @@ Eigen::Matrix3d rtf::rot_z(double t)
 }
 
 ///////////////////////////////////////////////////////////
+
+Eigen::MatrixXd rtf::pose_to_hom_T(Eigen::MatrixXd pose)
+{
+	Eigen::MatrixXd hom_T = Eigen::MatrixXd::Identity(4,4);
+	hom_T(0,3) = pose(0,0);
+	hom_T(1,3) = pose(0,1);
+	hom_T(2,3) = pose(0,2);
+	hom_T.block(0,0,3,3) = qt2rot(pose.block(0,3,1,4));
+	return hom_T;  
+}
+
+///////////////////////////////////////////////////////////
+
+Eigen::MatrixXd rtf::hom_T_to_pose(Eigen::MatrixXd hom_T)
+{
+	Eigen::MatrixXd pose(1,7);
+	pose(0,0) = hom_T(0,3);
+	pose(0,1) = hom_T(1,3);
+	pose(0,2) = hom_T(2,3);
+	pose.block(0,3,1,4) = rot2qt(hom_T.block(0,0,3,3));
+	return pose;  
+}
+
+///////////////////////////////////////////////////////////
+
+Eigen::MatrixXd rtf::hom_T_to_pose(Eigen::Matrix4d hom_T)
+{
+	Eigen::MatrixXd pose(1,7);
+	pose(0,0) = hom_T(0,3);
+	pose(0,1) = hom_T(1,3);
+	pose(0,2) = hom_T(2,3);
+	pose.block(0,3,1,4) = rot2qt(hom_T.block(0,0,3,3));
+	return pose;  
+}
+
+///////////////////////////////////////////////////////////
+

@@ -1,5 +1,5 @@
-#ifndef FILE_RW
-#define FILE_RW
+#ifndef FILE_RW_HPP
+#define FILE_RW_HPP
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef TRANSFORMATION_UTILITIES
-#define TRANSFORMATION_UTILITIES
+#ifndef TRANSFORMATION_UTILITIES_HPP
+#define TRANSFORMATION_UTILITIES_HPP
 
 #include <Eigen/Eigen>
 #include <vector>
@@ -21,6 +21,9 @@ public:
 
 	// apply homogenous transformation to data points
 	static Eigen::MatrixXd apply_transformation(Eigen::MatrixXd, Eigen::Matrix4d);
+	static Eigen::MatrixXd apply_transformation_to_waypoints(Eigen::MatrixXd, Eigen::Matrix4d);
+	static Eigen::MatrixXd apply_transformation(Eigen::MatrixXd, Eigen::MatrixXd);
+	static Eigen::MatrixXd apply_transformation_to_waypoints(Eigen::MatrixXd, Eigen::MatrixXd);
 
 	// Verifies validity of a rotation sequence
     static std::string validate_seq(std::string="");
@@ -77,6 +80,14 @@ public:
 	// Generate rotation matrix about Z-axis
 	// NOTE: input angle must be radians
 	static Eigen::Matrix3d rot_z(double);
+
+	// convert pose vector to homogenous tranformation
+	static Eigen::MatrixXd pose_to_hom_T(Eigen::MatrixXd);
+
+	// convert homogenous tranformation to pose vector 
+	static Eigen::MatrixXd hom_T_to_pose(Eigen::MatrixXd);
+	static Eigen::MatrixXd hom_T_to_pose(Eigen::Matrix4d);
+
 };
 
 #endif
