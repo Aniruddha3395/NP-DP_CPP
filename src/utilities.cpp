@@ -643,6 +643,81 @@ Eigen::MatrixXd ut::InPoly(Eigen::MatrixXd q, Eigen::MatrixXd p)
 
 ////////////////////////////////////////////////////////////
 
+void ut::InPoly(const Eigen::MatrixXd& q, const Eigen::MatrixXd& p, Eigen::MatrixXd& in)
+{
+    double l1[2][2];
+    double l2[2][2];
+
+    double xmin = p.col(0).minCoeff();
+    double xmax = p.col(0).maxCoeff();
+    double ymin = p.col(1).minCoeff();
+    double ymax = p.col(1).maxCoeff();
+
+    for (long i=0;i<q.rows();++i)
+    {
+        // bounding box test
+        if (q(i,0)<xmin || q(i,0)>xmax || q(i,1)<ymin || q(i,1)>ymax)
+        {
+            continue;
+        }
+        int intersection_count = 0;
+        Eigen::MatrixXd cont_lines = Eigen::MatrixXd::Constant(p.rows(),1,0);
+        for (int j=0;j<p.rows();++j)
+        {
+            if (j==0)
+            {
+                l1[0][0] = q(i,0);l1[0][1] = q(i,1);
+                l1[1][0] = xmax;l1[1][1] = q(i,1);
+                l2[0][0] = p(p.rows()-1,0);l2[0][1] = p(p.rows()-1,1);
+                l2[1][0] = p(j,0);l2[1][1] = p(j,1);
+                if (ut::lines_intersect(l1,l2))
+                {
+                    intersection_count++;
+                    cont_lines(j,0) = 1;
+                }   
+            }
+            else
+            {
+                l1[0][0] = q(i,0);l1[0][1] = q(i,1);
+                l1[1][0] = xmax;l1[1][1] = q(i,1);
+                l2[0][0] = p(j,0);l2[0][1] = p(j,1);
+                l2[1][0] = p(j-1,0);l2[1][1] = p(j-1,1);
+                if (ut::lines_intersect(l1,l2))
+                {
+                    intersection_count++;
+                    cont_lines(j,0) = 1;
+                    if (cont_lines(j-1,0)==1)
+                    {
+                        if (p(j-1,1)==q(i,1))
+                        {
+                            if (j-1==0)
+                            {
+                                if (!((p(p.rows()-1,1)<p(j-1,1) && p(j,1)<p(j-1,1)) || (p(p.rows()-1,1)>p(j-1,1) && p(j,1)>p(j-1,1))))
+                                {
+                                    intersection_count--;
+                                }
+                            }
+                            else
+                            {
+                                if (!((p(j-2,1)<p(j-1,1) && p(j,1)<p(j-1,1)) || (p(j-2,1)>p(j-1,1) && p(j,1)>p(j-1,1))))
+                                {
+                                    intersection_count--;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (intersection_count%2==1)
+        {
+            in(i,0) = 1;
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////
+
 bool ut::lines_intersect(double l1[2][2], double l2[2][2])
 {
 	// l1 for horizontal ray line...slope is always zero

@@ -1,3 +1,0 @@
-/home/aniruddha/Desktop/Non_Planar_3D_Printing/CPP/build/CMakeFiles/edit_cache.dir
-/home/aniruddha/Desktop/Non_Planar_3D_Printing/CPP/build/CMakeFiles/OUTFile.dir
-/home/aniruddha/Desktop/Non_Planar_3D_Printing/CPP/build/CMakeFiles/rebuild_cache.dir

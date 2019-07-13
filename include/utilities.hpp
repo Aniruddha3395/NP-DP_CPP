@@ -62,6 +62,7 @@ public:
 
 	// inpolygon function to check if point/s is/are inside polygon 
 	static Eigen::MatrixXd InPoly(Eigen::MatrixXd, Eigen::MatrixXd);
+	static void InPoly(const Eigen::MatrixXd&, const Eigen::MatrixXd&, Eigen::MatrixXd&);
 	static bool lines_intersect(double l1[2][2], double l2[2][2]);
 
 	// find the index of non-zero elements

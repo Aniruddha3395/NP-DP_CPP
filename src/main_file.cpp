@@ -46,7 +46,7 @@ int main()
 	int Path_Number = 2;    // put number from above
 	int FlipTravel = 0;     // 1 for yes, 0 for No
 	int space = 2;          // number of points to skip for smoother path
-
+	int skip_lines = 0;     // number of points to skip along the tool path
     ///////////////////////////
     // Bottom layer generation
 	///////////////////////////
@@ -117,7 +117,7 @@ int main()
 		////////////////////////////
 	    // infill path
 		////////////////////////////
-		Eigen::MatrixXd	layer_tool_path = NPAM::Infill_Path_with_euler(fillpts, FlipTravel, space, hatch_angle, x_avg, y_avg);
+		Eigen::MatrixXd	layer_tool_path = NPAM::Infill_Path_with_bxbybz(fillpts, FlipTravel, space, hatch_angle, x_avg, y_avg, skip_lines);
 		layer_tool_path.col(2) = layer_tool_path.col(2).array() + ((layer-1)*pathgap_z);
 		
 		if (generate_cont_toolpath)

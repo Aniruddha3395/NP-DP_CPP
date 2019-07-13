@@ -9,14 +9,14 @@ project(${EXEC})
 
 #include
 include_directories(/usr/local/include/eigen3)
-include_directories(/usr/local/include)
+# include_directories(/usr/local/include)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/data)
 include_directories(${PROJECT_SOURCE_DIR}/gnuplot-iostream-master)
 
 
 #link
-link_directories(/usr/local/lib)
+# link_directories(/usr/local/lib)
 
 # support for Libnabo  
 SET(CMAKE_CXX_FLAGS "-std=c++11 -O3")
@@ -35,7 +35,7 @@ add_executable(${EXEC} ${MAIN_FILE} ${UTLIB})
 
 ##LINKED LIBRARIES
 # link library for -lpthread (used for compiling the libigl)
-target_link_libraries(${EXEC} pthread)
+# target_link_libraries(${EXEC} pthread)
 
 # target libraries for using the GNUPLOT
 target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_iostreams.a)
